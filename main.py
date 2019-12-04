@@ -91,7 +91,7 @@ def main(graph: [Point], path: [[int]], max_iter: int):
 # Init the constants
 t_max: float = 80
 t_min: float = 0
-max_iterations: int = 10000
+max_iterations: int = 100000
 n: int = int(input())
 
 data = []
