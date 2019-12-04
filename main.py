@@ -41,8 +41,8 @@ def getLen(place: [Point], road: [int]):
     return ans
 
 
-def temperature(initial: float, final: float, iteration: float):
-    return final + (((initial - final) * (10000 - iteration)) / 10000)
+def temperature(initial: float, final: float, iteration: float, max_iter: int):
+    return final + (((initial - final) * (max_iter - iteration)) / max_iter)
 
 
 def getProbability(dE: float, temp: float):
@@ -59,10 +59,10 @@ def isTransition(probability: float):
     return value <= probability
 
 
-def main(graph: [Point], path: [[int]]):
+def main(graph: [Point], path: [[int]], max_iter: int):
     temper = [t_max]
-    for it in tqdm(range(1, 10001)):
-        temper.append(temperature(t_max, t_min, it))
+    for it in tqdm(range(1, max_iter)):
+        temper.append(temperature(t_max, t_min, it, max_iter))
         for i in range(len(path)):
             way = path[i].copy()
             first: int = randint(0, len(way) - 1)
@@ -71,7 +71,7 @@ def main(graph: [Point], path: [[int]]):
                 second = randint(0, len(way) - 1)
             b = way.copy()
             b[first], b[second] = b[second], b[first]
-            if isTransition(getProbability(getLen(graph, b) - getLen(graph, way), temperature(t_max, t_min, it))):
+            if isTransition(getProbability(getLen(graph, b) - getLen(graph, way), temperature(t_max, t_min, it, max_iter))):
                 path[i] = b
         it += 1
     ans: [Point] = 0
@@ -85,12 +85,13 @@ def main(graph: [Point], path: [[int]]):
         dev_y.append(graph[path[ans][i]].y)
     dev_x.append(graph[path[ans][0]].x)
     dev_y.append(graph[path[ans][0]].y)
-    return [dev_x, dev_y, it, temper]
+    return [dev_x, dev_y, max_iter, temper]
 
 
 # Init the constants
 t_max: float = 80
 t_min: float = 0
+max_iterations: int = int(input())
 n: int = int(input())
 
 data = []
@@ -116,7 +117,7 @@ for i in range(n):
         temporary = normalise(temporary)
     ways.append(temporary)
 print("Generated ways")
-a = main(data, ways)
+a = main(data, ways, max_iterations)
 
 
 plt.subplot(2, 1, 1)
