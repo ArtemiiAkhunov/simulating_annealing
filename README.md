@@ -1,2 +1,2 @@
-# simulating_annealing
-School project on Travelling salesman problem
+# Simulating annealing
+This is a school project on Travelling salesman problem.
