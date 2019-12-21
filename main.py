@@ -2,6 +2,7 @@ from random import random as rand, randint
 from math import exp, sqrt
 from matplotlib import pyplot as plt
 import numpy as np
+import pandas as pd
 from tqdm import tqdm
 
 
@@ -31,13 +32,15 @@ def normalise(array: []):
     return array
 
 
+def getDist(a: Point, b: Point):
+    return (a - b).size()
+
+
 def getLen(place: [Point], road: [int]):
     ans: float = 0
     for i in range(len(road) - 1):
-        a = place[road[i + 1]] - place[road[i]]
-        ans += a.size()
-    a = place[road[len(road) - 1]] - place[road[0]]
-    ans += a.size()
+        ans += getDist(place[road[i + 1]], place[road[i]])
+    ans += getDist(place[road[len(road) - 1]], place[road[0]])
     return ans
 
 
@@ -122,7 +125,7 @@ def main(graph: [Point], path: [[int]], max_iter: int):
 
 
 # Init the constants
-t_max: float = 5
+t_max: float = 2
 t_min: float = 0
 max_iterations: int = 100000
 n: int = int(input())
